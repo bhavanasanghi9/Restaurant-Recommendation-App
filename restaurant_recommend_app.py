@@ -86,7 +86,7 @@ if st.button('Generate Recommendations'):
         similarities = cosine_similarity(query_vector, document_vectors)
 
         # Get indices of documents or items sorted by similarity scores (descending order)
-        top_indices = np.argsort(similarities[0])[::-1]  
+        top_indices = np.argsort(similarities[0])[::-1][:3]
     
     final_df=pd.read_csv('zomato_restaurant_final.csv')
     
