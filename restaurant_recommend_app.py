@@ -89,8 +89,8 @@ if st.button('Generate Recommendations'):
         top_indices = np.argsort(similarities[0])[::-1][:3]
     
     final_df=pd.read_csv('zomato_restaurant_final.csv')
-    df=final_df[final_df['area'].str.contains(str(user_location))]
-    df1=df[df['cuisine'].str.contains(str(user_cuisine))]
+    df=final_df[final_df['area'].str.contains(str(user_location).lower())]
+    df1=df[df['cuisine'].str.contains(str(user_cuisine).lower())]
     if df1.empty:
         st.header("We could not find any matches for your input. However, here are some recommendations for you:")
         for idx in top_indices:
@@ -111,7 +111,15 @@ if st.button('Generate Recommendations'):
             st.write("Cuisine:", final_df.loc[idx, 'cuisine_list'])
             st.write("Location:", final_df.loc[idx, 'area_list'])
             st.write("Price:", final_df.loc[idx, 'price for two'])
-    
-    
+            # st.subheader("Restaurant Name: ")
+            # st.write(final_df.loc[idx, 'names'])
+            # st.subheader("Restaurant Rating: ")
+            # st.write(final_df.loc[idx, 'ratings'])
+            # st.subheader("Cuisine: ")
+            # st.write(final_df.loc[idx, 'cuisine_list'])
+            # st.subheader("Location: ")
+            # st.write(final_df.loc[idx, 'area_list'])
+            # st.subheader("Price: ")
+            # st.write(final_df.loc[idx, 'price for two'])
         
     
