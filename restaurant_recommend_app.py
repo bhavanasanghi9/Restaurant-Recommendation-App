@@ -62,31 +62,31 @@ def input_transformer(location, cuisine):
     return final_output
 
 preprocessed_input = input_transformer(user_location, user_cuisine)
+query_tokens=preprocessed_input.split()
 
 #st.button("Reset", type="primary")
 if st.button('Generate Recommendations'):
     
-    
-    
-    x_file_path = "concatenated_features.pkl"
-    # To load X from the pickle file
-    with open(x_file_path, 'rb') as file:
-        X_loaded = pickle.load(file)
-
-    # TF-IDF Vectorization
-    vector_file_path = "vectorizer.pkl"
-    # To load Vectorizer from the pickle file
-    with open(vector_file_path, 'rb') as file:
-        vectorizer = pickle.load(file)
+    # Load the object from the pickle file
+    with open('word_vectors.pkl', 'rb') as f:
+        word_vectors = pickle.load(f)
         
-    # TF-IDF Vectorization of user input
-    user_input_vector = vectorizer.transform([preprocessed_input])
+    # Load the object from the pickle file
+    with open('document_vectors.pkl', 'rb') as f:
+        document_vectors = pickle.load(f)
 
-    # Calculate cosine similarity between user input and recipes
-    similarity_scores = cosine_similarity(user_input_vector, X_loaded)
+    # Check if each word in the query exists in the vocabulary of the Word2Vec model
+    valid_tokens = [word for word in query_tokens if word in word_vectors]
 
-    # Get indices of top recommended recipes (top 3 in this example)
-    top_indices = similarity_scores.argsort()[0][-3:][::-1]
+    if valid_tokens:
+    # Calculate the average vector representation of the query
+        query_vector = np.mean([word_vectors[word] for word in valid_tokens], axis=0).reshape(1, -1)
+
+        # Compute cosine similarity between the query vector and document vectors
+        similarities = cosine_similarity(query_vector, document_vectors)
+
+        # Get indices of documents or items sorted by similarity scores (descending order)
+        top_indices = np.argsort(similarities[0])[::-1]  
     
     final_df=pd.read_csv('zomato_restaurant_final.csv')
     
