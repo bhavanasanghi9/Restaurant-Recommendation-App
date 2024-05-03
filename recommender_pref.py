@@ -63,8 +63,8 @@ preference={'I am not feeling picky today':'',
             'amazing ambience':'ambience',
             'date night':'date',
             'live music':'live',
-            'quick service':'quick',
             'good service':'service',
+            'quick service':'quick',
             'amazing dj':'dj',
             'party place':'dance',
             'breakfast vibe':'breakfast',
@@ -86,26 +86,30 @@ preference_list = list(preference.keys())
 selected_options = st.multiselect('Select up to 2 preferences (lets not be too picky):', preference_list, max_selections=3)
 # Display the selected options
 st.write('Your selected preferences:', selected_options)
-preference_dummy=' '.join(selected_options)
-preferences=preference.get(preference_dummy)
 
-def input_transformer(location, cuisine,preferences):
+
+
+def input_transformer(location, cuisine,selected_options):
     location=str(location)
     cuisine=str(cuisine)
     location=location.replace(' ','')
-    if not preferences:
+    if not selected_options:
         user_input=location + ' ' + cuisine
     else:
+        selected_options[0]=preference.get(selected_options[0])
+        if len(selected_options)==2:
+            selected_options[1]=preference.get(selected_options[1])
+        preferences=' '.join(selected_options)
         user_input = location + ' ' + cuisine+ ' '+preferences
     final_output=('').join(user_input.lower().split('  '))
     return final_output
 
-preprocessed_input = input_transformer(user_location, user_cuisine, preferences)
+preprocessed_input = input_transformer(user_location, user_cuisine, selected_options)
 query_tokens=preprocessed_input.split()
 
 #st.button("Reset", type="primary")
 if st.button('Generate Recommendations'):
-    if not preferences:
+    if not selected_options:
         # Load the object from the pickle file
         with open('word_vectors.pkl', 'rb') as f:
             word_vectors = pickle.load(f)
@@ -151,6 +155,7 @@ if st.button('Generate Recommendations'):
                 st.write("Location:", final_df.loc[idx, 'area_list'])
                 st.write("Price:", final_df.loc[idx, 'price for two'])
     else:
+        
         review_df=pd.read_csv('final_zomato_rests_with_reviews.csv')
         data1=review_df[review_df['area'].str.contains(str(user_location).lower())]
         data2=data1[data1['cuisine'].str.contains(str(user_cuisine).lower())]
@@ -192,7 +197,7 @@ if st.button('Generate Recommendations'):
                 st.write("Location:", data2.loc[idx, 'area_list'])
                 st.write("Price:", data2.loc[idx, 'price for two'])
         else:
-            # Display top recommended recipes
+        # Display top recommended recipes
             st.header("\nTop Recommended Restaurants:")
             for idx in top_indices:
                 st.title(data2.loc[idx, 'names'])
