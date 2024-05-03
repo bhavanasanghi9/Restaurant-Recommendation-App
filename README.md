@@ -19,6 +19,7 @@ This notebook contains -
 2. Cleaning and data pre-processing
 3. Using Word2Vec model and cosine similarity, recommedations are made 
 link to streamlit app code - https://github.com/bhavanasanghi9/Restaurant-Recommendation-App/blob/main/restaurant_recommend_app.py
+
 Link to app - https://restaurant-recommendation-app-yrbjfi5fcoprvjbbxvpjuu.streamlit.app/
 
 ### The second version recommends restaurants based on 3 inputs - choice of location, choice of cuisine, user preference
