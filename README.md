@@ -31,6 +31,7 @@ This notebook contains -
 2. Cleaning and data pre-processing of reviews data
 3. Using TF-IDF vectorization and cosine similarity, recommendations are made
 Link to streamlit app code - https://github.com/bhavanasanghi9/Restaurant-Recommendation-App/blob/main/recommender_pref.py
+
 Link to app - https://restaurant-recommendation-app-v2-xqwywdbnyyjv5u6psarrcq.streamlit.app/
 
 
